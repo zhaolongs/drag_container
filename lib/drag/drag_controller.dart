@@ -1,5 +1,4 @@
 
-
 /**
  * 创建人： Created by zhaolong
  * 创建时间：Created by  on 2020/7/5.
@@ -9,13 +8,14 @@
  * 可关注博客：https://blog.csdn.net/zl18603543572
  */
 
-
+///lib/code15/drag/drag_controller.dart
 ///抽屉状态监听
 typedef OpenDragListener = void Function(int value);
+
 ///抽屉控制器
 class DragController {
-
   OpenDragListener _openDragListener;
+
   ///控制器中添加监听
   setOpenDragListener(OpenDragListener listener) {
     _openDragListener = listener;
@@ -27,6 +27,7 @@ class DragController {
       _openDragListener(1);
     }
   }
+
   ///关闭抽屉
   void close() {
     if (_openDragListener != null) {
