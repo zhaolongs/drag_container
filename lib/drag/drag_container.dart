@@ -20,6 +20,7 @@ import 'drag_controller.dart';
 
 
 ///抽屉中显示的布局内容
+// ignore: must_be_immutable
 class DragContainer extends StatefulWidget {
   ///抽屉主体内容
   final Widget dragWidget;
