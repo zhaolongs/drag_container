@@ -1,10 +1,6 @@
 name: drag_container
-description: A pull-up drawer effect 1. When the drawer is closed, click the label and the drawer will open upward. This function can also be configured to close.
-  2, the drawer closed state, upward sliding, sliding over a certain height automatically upward sliding open, when no sliding over a certain height, automatically downward sliding, showing a closed state;
-  3. When the drawer is open, when the sliding view is at the top, slide down and the drawer will automatically slide down and close. It can be configured whether the function is enabled or not
-  4. When the drawer is open, when the drawer slides down, release it without sliding to a certain distance; the drawer will automatically slide up to return to the open state; when the drawer slides to a certain distance, release it and the drawer will automatically slide down to the closed state;
-  5, when the drawer is closed, gently sweep up the drawer, the drawer will slide up to the open state, when the drawer is open, gently sweep down, the drawer will slide down to the closed state.
-version: 0.0.2
+description: Pull drawer effect with flutter, support click open and close, support drag open and close, support swipe gesture open and close
+version: 1.0.0
 homepage: https://github.com/zhaolongs/drag_container.git
 
 environment:
@@ -16,8 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
