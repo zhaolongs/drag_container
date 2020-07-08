@@ -1,19 +1,22 @@
 name: drag_container
 description: Pull drawer effect with flutter, support click open and close, support drag open and close, support swipe gesture open and close
-version: 1.0.0
+version: 1.0.2
 homepage: https://github.com/zhaolongs/drag_container.git
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
-  flutter: ">=1.12.0 <2.0.0"
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"
 
 
 
 dependencies:
   flutter:
     sdk: flutter
+
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  flutter_driver:
     sdk: flutter
 
 
