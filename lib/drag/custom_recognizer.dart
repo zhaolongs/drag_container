@@ -24,14 +24,14 @@ class CustomVerticalDragGestureRecognizer
   ///保存手势点的集合
   final Map<int, VelocityTracker> _velocityTrackers = <int, VelocityTracker>{};
 
-  CustomVerticalDragGestureRecognizer({Object debugOwner, this.filingListener})
+  CustomVerticalDragGestureRecognizer(
+      {Object? debugOwner, required this.filingListener})
       : super(debugOwner: debugOwner);
 
   @override
-  void addPointer(PointerEvent event) {
+  void addPointer(PointerDownEvent event) {
     super.addPointer(event);
 
-    ///添加一个VelocityTracker
     _velocityTrackers[event.pointer] = VelocityTracker();
   }
 
@@ -41,11 +41,11 @@ class CustomVerticalDragGestureRecognizer
     if (!event.synthesized &&
         (event is PointerDownEvent || event is PointerMoveEvent)) {
       ///主要用跟踪触摸屏事件（flinging事件和其他gestures手势事件）的速率
-      final VelocityTracker tracker = _velocityTrackers[event.pointer];
+      final VelocityTracker? tracker = _velocityTrackers[event.pointer];
       assert(tracker != null);
 
       ///将指定时间的位置添加到跟踪器
-      tracker.addPosition(event.timeStamp, event.position);
+      tracker!.addPosition(event.timeStamp, event.position);
     }
   }
 
@@ -53,10 +53,10 @@ class CustomVerticalDragGestureRecognizer
   void didStopTrackingLastPointer(int pointer) {
     final double minVelocity = minFlingVelocity ?? kMinFlingVelocity;
     final double minDistance = minFlingDistance ?? kTouchSlop;
-    final VelocityTracker tracker = _velocityTrackers[pointer];
+    final VelocityTracker? tracker = _velocityTrackers[pointer];
 
     ///VelocityEstimate 计算二维速度的
-    final VelocityEstimate estimate = tracker.getVelocityEstimate();
+    final VelocityEstimate? estimate = tracker?.getVelocityEstimate();
     bool isFling = false;
     if (estimate != null && estimate.pixelsPerSecond != null) {
       isFling = estimate.pixelsPerSecond.dy.abs() > minVelocity &&

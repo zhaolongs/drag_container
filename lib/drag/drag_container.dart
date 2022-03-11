@@ -28,14 +28,14 @@ class DragContainer extends StatefulWidget {
   final double maxChildRate;
 
   ///抽屉控制器
-  final DragController controller;
+  final DragController? controller;
 
   ///抽屉中滑动视图的控制器
   /// 0.0.2 版本已弃用 改为[NotificationListener]
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   ///抽屉滑动状态回调
-  final Function(bool isOpen) dragCallBack;
+  final Function(bool isOpen)? dragCallBack;
 
   ///是否显示标题
   final bool isShowHeader;
@@ -60,8 +60,8 @@ class DragContainer extends StatefulWidget {
   final bool useAtEdge;
 
   DragContainer(
-      {Key key,
-      @required this.dragWidget,
+      {Key? key,
+      required this.dragWidget,
       this.initChildRate = 0.1,
       this.maxChildRate = 0.4,
       this.cornerRadius = 12,
@@ -69,7 +69,7 @@ class DragContainer extends StatefulWidget {
       this.isShowHeader = true,
       this.useAtEdge = true,
       this.duration = const Duration(milliseconds: 250),
-      this.maxOffsetDistance,
+      this.maxOffsetDistance = 1.5,
       this.scrollController,
       this.controller,
       this.dragCallBack});
@@ -81,20 +81,20 @@ class DragContainer extends StatefulWidget {
 class _DragContainerState extends State<DragContainer>
     with TickerProviderStateMixin {
   ///动画控制器
-  AnimationController animalController;
+  late AnimationController animalController;
 
   ///可显示的最大高度 具体的像素
-  double maxChildSize;
+  double maxChildSize=0;
 
   ///默认显示的高度 具体的像素
-  double initialChildSize;
-  double maxOffsetDistance;
+  double initialChildSize = 0;
+  double maxOffsetDistance = 0;
 
   ///抽屉的偏移量
-  double offsetDistance;
+  double offsetDistance = 0;
 
   ///动画
-  Animation<double> animation;
+  Animation<double>? animation;
 
   ///快速轻扫标识
   ///就是指手指在抽屉上快速的轻扫一下
@@ -122,7 +122,7 @@ class _DragContainerState extends State<DragContainer>
 
     ///添加控制器监听
     if (widget.controller != null) {
-      widget.controller.setOpenDragListener((value) {
+      widget.controller!.setOpenDragListener((value) {
         if (value == 1) {
           ///向上
           offsetDistanceOpen(isCallBack: false);
@@ -148,7 +148,7 @@ class _DragContainerState extends State<DragContainer>
     ///然后在 State的生命周期里面，这个 mounted 属性不会改变，
     ///直至 framework 调用 State.dispose
     if (mounted) {
-      if (maxChildSize == null) {
+      if (maxChildSize == 0) {
         ///计算抽屉可展开的最大值
         maxChildSize = MediaQuery.of(context).size.height * widget.maxChildRate;
 
@@ -261,7 +261,8 @@ class _DragContainerState extends State<DragContainer>
     switch (notification.runtimeType) {
       case ScrollStartNotification:
         print("开始滚动");
-        ScrollStartNotification scrollNotification = notification;
+        ScrollStartNotification scrollNotification =
+            notification as ScrollStartNotification;
         ScrollMetrics metrics = scrollNotification.metrics;
 
         ///当前位置
@@ -272,7 +273,8 @@ class _DragContainerState extends State<DragContainer>
         break;
       case ScrollUpdateNotification:
         print("正在滚动");
-        ScrollUpdateNotification scrollNotification = notification;
+        ScrollUpdateNotification scrollNotification =
+            notification as ScrollUpdateNotification;
 
         ///获取滑动位置信息
         ScrollMetrics metrics = scrollNotification.metrics;
@@ -360,7 +362,7 @@ class _DragContainerState extends State<DragContainer>
     ///当调用 dragController 的open与close方法
     ///来触发时不使用回调
     if (widget.dragCallBack != null && isCallBack) {
-      widget.dragCallBack(isOpen);
+      widget.dragCallBack!(isOpen);
     }
     print(" start $start  end $end");
 
@@ -372,7 +374,7 @@ class _DragContainerState extends State<DragContainer>
     ///动画变化满园
     animation = Tween(begin: start, end: end).animate(curve)
       ..addListener(() {
-        offsetDistance = animation.value;
+        offsetDistance = animation!.value;
         setState(() {});
       });
 
@@ -406,7 +408,7 @@ class _DragContainerState extends State<DragContainer>
               decoration: BoxDecoration(
                   color: isOpen ? Colors.blue : Colors.grey,
                   borderRadius: BorderRadius.all(Radius.circular(6)),
-                  border: Border.all(color: Colors.grey[600], width: 1.0)),
+                  border: Border.all(color: Color(0xFF757575), width: 1.0)),
             ),
           )
         ],

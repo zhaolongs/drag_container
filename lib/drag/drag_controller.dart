@@ -13,7 +13,7 @@ typedef OpenDragListener = void Function(int value);
 
 ///抽屉控制器
 class DragController {
-  OpenDragListener _openDragListener;
+  OpenDragListener ?_openDragListener;
 
   ///控制器中添加监听
   setOpenDragListener(OpenDragListener listener) {
@@ -23,14 +23,14 @@ class DragController {
   ///打开抽屉
   void open() {
     if (_openDragListener != null) {
-      _openDragListener(1);
+      _openDragListener!(1);
     }
   }
 
   ///关闭抽屉
   void close() {
     if (_openDragListener != null) {
-      _openDragListener(2);
+      _openDragListener!(2);
     }
   }
 }
