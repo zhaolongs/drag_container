@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 
 /**
  * 创建人： Created by zhaolong
@@ -32,7 +30,8 @@ class CustomVerticalDragGestureRecognizer
   void addPointer(PointerDownEvent event) {
     super.addPointer(event);
 
-    _velocityTrackers[event.pointer] = VelocityTracker();
+    _velocityTrackers[event.pointer] =
+        VelocityTracker.withKind(PointerDeviceKind.touch);
   }
 
   @override
@@ -58,14 +57,12 @@ class CustomVerticalDragGestureRecognizer
     ///VelocityEstimate 计算二维速度的
     final VelocityEstimate? estimate = tracker?.getVelocityEstimate();
     bool isFling = false;
-    if (estimate != null && estimate.pixelsPerSecond != null) {
+    if (estimate != null) {
       isFling = estimate.pixelsPerSecond.dy.abs() > minVelocity &&
           estimate.offset.dy.abs() > minDistance;
     }
     _velocityTrackers.clear();
-    if (filingListener != null) {
-      filingListener(isFling);
-    }
+    filingListener(isFling);
 
     ///super.didStopTrackingLastPointer(pointer) 会调用[_handleDragEnd]
     ///所以将[lingListener(isFling);]放在前一步调用
