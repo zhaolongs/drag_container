@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_recognizer.dart';
@@ -84,7 +82,7 @@ class _DragContainerState extends State<DragContainer>
   late AnimationController animalController;
 
   ///可显示的最大高度 具体的像素
-  double maxChildSize=0;
+  double maxChildSize = 0;
 
   ///默认显示的高度 具体的像素
   double initialChildSize = 0;
@@ -110,6 +108,9 @@ class _DragContainerState extends State<DragContainer>
   ///开始滑动时会更新此标识
   ///是否在顶部或底部
   bool atEdge = false;
+
+  ///是否第一次加载完成
+  bool isMounted = false;
 
   @override
   void initState() {
@@ -182,7 +183,18 @@ class _DragContainerState extends State<DragContainer>
   Widget build(BuildContext context) {
     ///抽屉视图可偏移的距离限制在
     ///widget.initialChildSize/4 与 widget.maxChildSize 之间
-    offsetDistance = offsetDistance.clamp(initialChildSize / 4, maxChildSize);
+    ///
+    ///这里第一次进来的时候 偏移量有问题 如果按照最小值算的话，
+    ///那么它默认是显示完整然后再向Y轴偏移offsetDistance位置，所以第一次显示都会展示大半部分而不是默认的关闭的高度
+    ///这边加上一个是否第一次渲染完毕，如果没有的话 先赋值当前的最大高度减去关闭的时候的高度 等于当前Y轴的偏移量
+    offsetDistance = isMounted
+        ? offsetDistance.clamp(initialChildSize / 4, maxChildSize)
+        : maxChildSize - initialChildSize;
+
+    /// 第一次渲染完毕后 手动设置为true
+    setState(() {
+      isMounted = true;
+    });
 
     ///平移变换
     return Transform.translate(
